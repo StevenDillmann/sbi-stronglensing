@@ -6,10 +6,37 @@ from scipy.stats import norm, gaussian_kde
 from tarp import get_tarp_coverage
 from analysis.diagnostic_utils import check_coverage, check_parity
 from astropy.visualization import simple_norm
+import os
 
 # === TRAINING PLOT FUNCTIONS ===
 
-def plot_training_loss(inference_list, colors, legend_labels, title = None):
+def plot_trainval_loss(inference, color, title = None, save_folder = None):
+
+    plt.figure(figsize=(10, 10))
+    plt.plot(inference.summary['training_loss'], color=color, label='Training', linestyle='-')
+    plt.plot(inference.summary['validation_loss'], color=color, label='Validation', linestyle='--')
+
+    plt.xlabel('Epoch', fontsize=15)
+    plt.ylabel('Loss', fontsize=15)
+    plt.tick_params(axis='both', which='major', labelsize=15)
+    plt.tick_params(axis='both', which='minor', labelsize=15)
+    plt.xticks(np.arange(0, len(inference.summary['training_loss']), 1))
+    plt.legend(loc='upper right', fontsize=15, frameon=False)
+
+
+
+    if title is not None:
+        plt.title(title, fontsize=20)
+
+    # save the plot
+    if save_folder is not None:
+        plt.savefig(os.path.join(save_folder, 'trainval_loss.png'))
+
+    plt.show()
+
+    return None
+
+def plot_trainval_loss_multiple(inference_list, colors, legend_labels, title = None, save_folder = None):
 
     fig, ax = plt.subplots(figsize=(10, 10))
     if title is not None:
@@ -31,6 +58,10 @@ def plot_training_loss(inference_list, colors, legend_labels, title = None):
     ax.legend(loc='upper right', fontsize=15, frameon=False)
 
     plt.show()
+
+    # save the plot
+    if save_folder is not None:
+        plt.savefig(os.path.join(save_folder, 'trainval_loss.png'))
 
     return ax
 
