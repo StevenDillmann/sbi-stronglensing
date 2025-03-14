@@ -4,12 +4,18 @@ from torch.utils.data import Dataset, DataLoader
 import pandas as pd
 import h5py
 from sbi.inference import NPE
-from training.feature_extractor import get_feature_extractor
-from training.posterior_estimator import get_posterior_estimator
 from datetime import datetime
 import os
 import pickle
 from torch.utils.tensorboard.writer import SummaryWriter
+
+# Local imports
+try:
+    from feature_extractor import get_feature_extractor
+    from posterior_estimator import get_posterior_estimator
+except ImportError:
+    from training.feature_extractor import get_feature_extractor
+    from training.posterior_estimator import get_posterior_estimator
 
 def make_summary_writer(save_folder):
     """Creates a function that returns a SummaryWriter with the specified save folder."""

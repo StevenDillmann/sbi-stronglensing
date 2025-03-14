@@ -11,12 +11,21 @@ import pickle
 import argparse
 
 # Local imports
-from data_loader import load_data
-from feature_extractor import get_feature_extractor
-from posterior_estimator import get_posterior_estimator
-from sbi_trainer import get_npe_model, train_npe_model
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from analysis.visualization_utils import plot_trainval_loss
+try:
+    # When running as a module from src directory
+    from training.data_loader import load_data
+    from training.feature_extractor import get_feature_extractor
+    from training.posterior_estimator import get_posterior_estimator
+    from training.sbi_trainer import get_npe_model, train_npe_model
+    from analysis.visualization_utils import plot_trainval_loss
+except ImportError:
+    # When running directly from training directory
+    from data_loader import load_data
+    from feature_extractor import get_feature_extractor
+    from posterior_estimator import get_posterior_estimator
+    from sbi_trainer import get_npe_model, train_npe_model
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from analysis.visualization_utils import plot_trainval_loss
 
 def execute_training(config_path):
     # Load configuration (flexible yaml or json)
