@@ -3,13 +3,16 @@ import pandas as pd
 import h5py
 import numpy as np
 import sys
+
 def get_train_folders(root_dir):
-    """Returns a sorted list of train_X directories."""
-    return sorted([f for f in os.listdir(root_dir) if f.startswith("train_") and os.path.isdir(os.path.join(root_dir, f))])
+    """Returns a sorted list of train_X directories with full paths."""
+    return sorted([os.path.join(root_dir, f) for f in os.listdir(root_dir) 
+                  if f.startswith("train_") and os.path.isdir(os.path.join(root_dir, f))])
 
 def merge_metadata(train_folders, output_metadata_path):
     """Merges all metadata.csv files into a single file."""
-    metadata_list = []
+    # Create empty DataFrame for first file
+    combined_metadata = pd.DataFrame()
     
     for folder in train_folders:
         metadata_file = os.path.join(folder, "metadata.csv")
@@ -17,23 +20,18 @@ def merge_metadata(train_folders, output_metadata_path):
         if os.path.exists(metadata_file):
             try:
                 df = pd.read_csv(metadata_file)
-                metadata_list.append(df)
+                if combined_metadata.empty:
+                    combined_metadata = df
+                else:
+                    combined_metadata = pd.concat([combined_metadata, df], ignore_index=True)
             except Exception as e:
                 print(f"Error reading {metadata_file}: {str(e)}")
                 continue
-
-    if metadata_list:
-        try:
-            combined_metadata = pd.concat(metadata_list, ignore_index=True)
-            combined_metadata.to_csv(output_metadata_path, index=False)
-            print(f"Successfully saved combined metadata to {output_metadata_path}")
-            return True
-        except Exception as e:
-            print(f"Error saving combined metadata: {str(e)}")
-            return False
-    else:
-        print("No metadata.csv files found or all files failed to load.")
-        return False
+    
+    # Save even if empty, just like we do with h5
+    combined_metadata.to_csv(output_metadata_path, index=False)
+    print(f"Saved combined metadata to {output_metadata_path}")
+    return True
 
 def merge_hdf5(train_folders, output_h5_path):
     """Merges all image_data.h5 files into a single file."""
@@ -57,11 +55,18 @@ def merge_hdf5(train_folders, output_h5_path):
 
 def main(root_dir):
     """Main function to merge all train_X folders into a single train folder."""
-    # root_dir = "../datasets/"  # Change this if needed
+    print(f"Processing data from: {root_dir}")
     output_dir = os.path.join(root_dir, "train")
     os.makedirs(output_dir, exist_ok=True)
 
+    # Get full paths to train folders
     train_folders = get_train_folders(root_dir)
+    if not train_folders:
+        print(f"No train_X folders found in {root_dir}")
+        return
+
+    print(f"Found train folders: {train_folders}")
+    
     output_metadata_path = os.path.join(output_dir, "metadata.csv")
     output_h5_path = os.path.join(output_dir, "image_data.h5")
 
@@ -69,5 +74,8 @@ def main(root_dir):
     merge_hdf5(train_folders, output_h5_path)
 
 if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python dataprocessing_utils.py /path/to/datasets")
+        sys.exit(1)
     root_dir = sys.argv[1]
     main(root_dir)
