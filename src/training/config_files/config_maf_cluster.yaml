@@ -48,6 +48,6 @@ sbi_trainer:
   show_progress_bars: true
 
 misc:
-  save_directory: "/Users/steven/Desktop/WinterRotation/sbi-stronglensing/models/"
+  save_directory: "/scratch/users/stevendi/sbi-stronglensing/models/" # CHANGE THIS
   save_loss_plot: true
 
