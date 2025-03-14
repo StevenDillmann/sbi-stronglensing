@@ -15,15 +15,25 @@ def merge_metadata(train_folders, output_metadata_path):
         metadata_file = os.path.join(folder, "metadata.csv")
         print(f"Checking: {metadata_file}")  # Debug print
         if os.path.exists(metadata_file):
-            df = pd.read_csv(metadata_file)
-            metadata_list.append(df)
+            try:
+                df = pd.read_csv(metadata_file)
+                metadata_list.append(df)
+            except Exception as e:
+                print(f"Error reading {metadata_file}: {str(e)}")
+                continue
 
     if metadata_list:
-        combined_metadata = pd.concat(metadata_list, ignore_index=True)
-        combined_metadata.to_csv(output_metadata_path, index=False)
-        print(f"Saved combined metadata to {output_metadata_path}")
+        try:
+            combined_metadata = pd.concat(metadata_list, ignore_index=True)
+            combined_metadata.to_csv(output_metadata_path, index=False)
+            print(f"Successfully saved combined metadata to {output_metadata_path}")
+            return True
+        except Exception as e:
+            print(f"Error saving combined metadata: {str(e)}")
+            return False
     else:
-        print("No metadata.csv files found.")
+        print("No metadata.csv files found or all files failed to load.")
+        return False
 
 def merge_hdf5(train_folders, output_h5_path):
     """Merges all image_data.h5 files into a single file."""
