@@ -1,6 +1,6 @@
 data_loader:
-  data_directory: /scratch/users/stevendi/datasets/validation 
-  
+  data_directory: "/scratch/users/stevendi/datasets/validate" # CHANGE THIS
+
   parameter_labels: ["main_deflector_parameters_theta_E",
     "main_deflector_parameters_gamma1",
     "main_deflector_parameters_gamma2",
