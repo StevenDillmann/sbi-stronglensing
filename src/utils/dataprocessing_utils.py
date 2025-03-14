@@ -45,9 +45,9 @@ def merge_hdf5(train_folders, output_h5_path):
                 first_file = False
     print(f"Saved combined image data to {output_h5_path}")
 
-def main():
+def main(root_dir):
     """Main function to merge all train_X folders into a single train folder."""
-    root_dir = "../datasets/"  # Change this if needed
+    # root_dir = "../datasets/"  # Change this if needed
     output_dir = os.path.join(root_dir, "train")
     os.makedirs(output_dir, exist_ok=True)
 
