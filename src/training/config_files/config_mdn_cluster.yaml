@@ -28,7 +28,7 @@ feature_extractor:
   pool_kernel_size: 2 # cnn
 
 posterior_estimator:
-  density_estimator: maf # density_estimator: maf, nsf, maf_rqs, mdn
+  density_estimator: mdn # density_estimator: maf, nsf, maf_rqs, mdn
   z_score_theta: null 
   z_score_x: null
   hidden_features: 200
