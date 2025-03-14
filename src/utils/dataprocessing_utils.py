@@ -2,7 +2,7 @@ import os
 import pandas as pd
 import h5py
 import numpy as np
-
+import sys
 def get_train_folders(root_dir):
     """Returns a sorted list of train_X directories."""
     return sorted([f for f in os.listdir(root_dir) if f.startswith("train_") and os.path.isdir(os.path.join(root_dir, f))])
@@ -59,4 +59,9 @@ def main(root_dir):
     merge_hdf5(train_folders, output_h5_path)
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) != 2:
+        print("Usage: python dataprocessing_utils.py <root_dir>")
+        sys.exit(1)
+    
+    root_dir = sys.argv[1]
+    main(root_dir)
