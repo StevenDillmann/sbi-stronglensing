@@ -102,7 +102,7 @@ def train_npe_model(model, theta, x,
     inference = NPE(density_estimator=model, show_progress_bars=show_progress_bars)
     
     # Append simulations to inference object
-    inference.append_simulations(theta, x)
+    inference.append_simulations(theta, x, data_device = 'cpu')
     
     # Train 
     estimator = inference.train(training_batch_size=batch_size,

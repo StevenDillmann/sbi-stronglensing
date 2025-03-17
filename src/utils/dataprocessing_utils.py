@@ -74,8 +74,5 @@ def main(root_dir):
     merge_hdf5(train_folders, output_h5_path)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python dataprocessing_utils.py /path/to/datasets")
-        sys.exit(1)
     root_dir = sys.argv[1]
     main(root_dir)
