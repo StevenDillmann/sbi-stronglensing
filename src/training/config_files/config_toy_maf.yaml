@@ -1,0 +1,53 @@
+data_loader:
+  data_directory: "/scratch/users/stevendi/datasets/train_3" # CHANGE THIS
+
+  parameter_labels: ["main_deflector_parameters_theta_E",
+    "main_deflector_parameters_gamma1",
+    "main_deflector_parameters_gamma2",
+    "main_deflector_parameters_gamma",
+    "main_deflector_parameters_e1",
+    "main_deflector_parameters_e2",
+    "main_deflector_parameters_center_x",
+    "main_deflector_parameters_center_y",
+    "source_parameters_center_x",
+    "source_parameters_center_y"
+    ]
+
+# Feature extractor 
+feature_extractor:
+  network_architecture: cnn # network_architecture: resnet34, cnn
+  feature_dim: 128
+  weights: null # resnet34
+  input_shape: [180, 180] # cnn
+  in_channels: 1 # cnn
+  out_channels_per_layer: [32, 64, 128, 256] # cnn
+  num_conv_layers: 4 # cnn
+  num_linear_layers: 2 # cnn
+  num_linear_units: 256
+  kernel_size: 5 # cnn
+  pool_kernel_size: 2 # cnn
+
+posterior_estimator:
+  density_estimator: maf # density_estimator: maf, nsf, maf_rqs, mdn
+  z_score_theta: null 
+  z_score_x: null
+  hidden_features: 200
+  num_transforms: 20
+  num_components: 1
+  num_bins: 10
+
+sbi_trainer:
+  batch_size: 64
+  learning_rate: 0.0005
+  validation_fraction: 0.1
+  stop_after_epochs: 20
+  max_num_epochs: 2147483647
+  resume_training: false
+  retrain_from_scratch: false
+  show_train_summary: true
+  show_progress_bars: true
+
+misc:
+  save_directory: "/scratch/users/stevendi/models/" # CHANGE THIS
+  save_loss_plot: true
+
