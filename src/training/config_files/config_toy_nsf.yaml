@@ -1,5 +1,5 @@
 data_loader:
-  data_directory: "/scratch/users/stevendi/datasets/train_0" # CHANGE THIS
+  data_directory: "/scratch/users/stevendi/datasets/train_3" # CHANGE THIS
 
   parameter_labels: ["main_deflector_parameters_theta_E",
     "main_deflector_parameters_gamma1",
