@@ -16,31 +16,32 @@ data_loader:
 # Feature extractor 
 feature_extractor:
   network_architecture: cnn # network_architecture: resnet34, cnn
-  feature_dim: 128
+  feature_dim: 64
   weights: null # resnet34
   input_shape: [180, 180] # cnn
   in_channels: 1 # cnn
-  out_channels_per_layer: [32, 64, 128, 256] # cnn
+  out_channels_per_layer: [16, 32, 64, 128] # cnn
   num_conv_layers: 4 # cnn
-  num_linear_layers: 2 # cnn
-  num_linear_units: 256
-  kernel_size: 5 # cnn
+  num_linear_layers: 3 # cnn
+  num_linear_units: 128
+  kernel_size: 3 # cnn
   pool_kernel_size: 2 # cnn
 
 posterior_estimator:
   density_estimator: maf # density_estimator: maf, nsf, maf_rqs, mdn
-  z_score_theta: null 
-  z_score_x: null
-  hidden_features: 200
-  num_transforms: 20
+  z_score_theta: independent
+  z_score_x: structured
+  hidden_features: 128
+  num_transforms: 10
   num_components: 1
   num_bins: 10
+  use_batch_norm: true
 
 sbi_trainer:
-  batch_size: 64
+  batch_size: 256
   learning_rate: 0.0005
-  validation_fraction: 0.1
-  stop_after_epochs: 20
+  validation_fraction: 0.15
+  stop_after_epochs: 5
   max_num_epochs: 2147483647
   resume_training: false
   retrain_from_scratch: false

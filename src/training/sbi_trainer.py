@@ -35,6 +35,7 @@ def get_npe_model(network_architecture="cnn",
                 num_transforms=5,
                 num_components=1,
                 num_bins=10,
+                use_batch_norm=True,
                 device='cuda' if torch.cuda.is_available() else 'cpu'):
     """
     Trains a Neural Posterior Estimation model using a feature extractor and density estimator.
@@ -49,6 +50,7 @@ def get_npe_model(network_architecture="cnn",
         num_transforms: Number of transforms in flow-based models
         num_components: Number of components for MDN
         num_bins: Number of bins for NSF
+        ...
         device: Device to train on
     """
     
@@ -77,6 +79,7 @@ def get_npe_model(network_architecture="cnn",
         num_components=num_components,
         num_bins=num_bins,
         embedding_net=embedding_net,
+        use_batch_norm=use_batch_norm
     )
 
     return npe_model
