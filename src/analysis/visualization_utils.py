@@ -236,10 +236,15 @@ def plot_parity(true_values, predicted_values_list, error_values_list,
         
         # Calculate quality metrics if required
         if quality_metrics is not None:
-            metric_values = check_parity(true_values, predicted_values, error_values, quality_metrics = quality_metrics)
-            metric_strings = [f"{key}: {value:.2f}" for key, value in metric_values.items()]
+            metric_values = check_parity(true_values, predicted_values, error_values, quality_metrics=quality_metrics)
+            metric_strings = []
+            for key, value in metric_values.items():
+                if key != "bias" or key != "bias_err":  
+                    metric_strings.append(f"{key}: {value:.3f}")
+                elif key == "bias" and "bias_err" in metric_values:
+                    metric_strings.append(f"bias: {metric_values['bias']:.3f} ± {metric_values['bias_err']:.3f}")
             legend_label += f' ({", ".join(metric_strings)})'
-        
+
         # Plot parity plot
         scatter_ax.errorbar(
             true_values, predicted_values, yerr=error_values, fmt='.',
@@ -262,10 +267,10 @@ def plot_parity(true_values, predicted_values_list, error_values_list,
             kde_vals = kde(x_vals)
             hist_ax.plot(kde_vals, x_vals, color=color, linestyle='-', linewidth=1)
 
-        bias = np.mean(np.array(residuals))
-        bias_error = np.std(np.array(residuals)) / np.sqrt(len(residuals))
-        ypos = 1.0 - 0.5 * ((1-len(predicted_values_list)) * 0.075) - i*0.075
-        hist_ax.text(0.5,  ypos, f"$\mu_{{bias}}$ = {bias:.3f}$\pm${bias_error:.3f}", horizontalalignment='center', transform=hist_ax.transAxes,size=9.5, color=color, verticalalignment='center')
+        # bias = np.mean(np.array(residuals))
+        # bias_error = np.std(np.array(residuals)) / np.sqrt(len(residuals))
+        # ypos = 1.0 - 0.5 * ((1-len(predicted_values_list)) * 0.075) - i*0.075
+        # hist_ax.text(0.5,  ypos, f"$\mu_{{bias}}$ = {bias:.3f}$\pm${bias_error:.3f}", horizontalalignment='center', transform=hist_ax.transAxes,size=9.5, color=color, verticalalignment='center')
 
     # Set labels and ticks for scatter plot
     scatter_ax.set_xlabel('True Value', fontsize=15)

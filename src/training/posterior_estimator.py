@@ -4,7 +4,7 @@ from sbi.neural_nets import posterior_nn
 
 # write script to define the posterior estimator
 
-def get_posterior_estimator(density_estimator="maf", z_score_theta=None, z_score_x=None, hidden_features=128, num_transforms=5, num_components=1, num_bins=10, embedding_net=None, device='cuda' if torch.cuda.is_available() else 'cpu'):
+def get_posterior_estimator(density_estimator="maf", z_score_theta=None, z_score_x=None, hidden_features=128, num_transforms=5, num_components=1, num_bins=10, embedding_net=None, use_batch_norm=True, device='cuda' if torch.cuda.is_available() else 'cpu'):
     """
     Creates and returns a Neural Posterior Estimation (NPE) model.
     
@@ -26,6 +26,7 @@ def get_posterior_estimator(density_estimator="maf", z_score_theta=None, z_score
             num_components=num_components,
             num_bins=num_bins,
             embedding_net=embedding_net,
+            use_batch_norm=use_batch_norm,
             device = device
         )
     

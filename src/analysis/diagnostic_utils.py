@@ -52,11 +52,18 @@ def check_parity(true_values, predicted_values, error_values, quality_metrics = 
         if 'RMSE' in quality_metrics:
             metric_values['RMSE'] = np.sqrt(np.mean((np.array(predicted_values) - np.array(true_values)) ** 2))
 
-        if 'MAE' in quality_metrics:
-            metric_values['MAE'] = np.mean(np.abs(np.array(predicted_values) - np.array(true_values)))
+        if 'accuracy' in quality_metrics:
+            metric_values['accuracy'] = np.mean(np.abs(np.array(predicted_values) - np.array(true_values)))
 
         if 'precision' in quality_metrics:
             metric_values['precision'] = np.mean(error_values)
+
+        if 'bias' in quality_metrics:
+            residuals = np.array(predicted_values) - np.array(true_values)
+            bias = np.mean(np.array(residuals))
+            bias_error = np.std(np.array(residuals)) / np.sqrt(len(residuals))
+            metric_values['bias'] = bias
+            metric_values['bias_err'] = bias_error
 
         return metric_values
 
