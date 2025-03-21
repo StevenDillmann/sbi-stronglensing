@@ -239,8 +239,8 @@ def plot_parity(true_values, predicted_values_list, error_values_list,
             metric_values = check_parity(true_values, predicted_values, error_values, quality_metrics=quality_metrics)
             metric_strings = []
             for key, value in metric_values.items():
-                if key != "bias" or key != "bias_err":  
-                    metric_strings.append(f"{key}: {value:.3f}")
+                if key != "bias" and key != "bias_err":  
+                    metric_strings.append(f"{key}: {value:.2f}")
                 elif key == "bias" and "bias_err" in metric_values:
                     metric_strings.append(f"bias: {metric_values['bias']:.3f} ± {metric_values['bias_err']:.3f}")
             legend_label += f' ({", ".join(metric_strings)})'
@@ -276,7 +276,7 @@ def plot_parity(true_values, predicted_values_list, error_values_list,
     scatter_ax.set_xlabel('True Value', fontsize=15)
     scatter_ax.set_ylabel('Predicted Value', fontsize=15)
     scatter_ax.tick_params(axis='both', which='major', labelsize=15)
-    scatter_ax.legend(loc='upper left', fontsize=15, frameon=False)
+    scatter_ax.legend(loc='upper left', fontsize=13, frameon=False)
     
     # Residual plot settings
     residual_ax.axhline(0, color='k', linestyle=':')
